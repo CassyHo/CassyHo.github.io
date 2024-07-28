@@ -142,9 +142,8 @@
         // Clean data by dropping NaNs
         data = data.filter(d => d.Gender && d.Diagnosis !== '' && d.Ethnicity && d.AlcoholConsumption !== '' && d.SleepQuality !== '' && d.MMSE !== '' && d.FunctionalAssessment !== '');
 // Scene 1: Age Distribution by Gender and Diagnosis
-        let isLegendCreated = false;  // Track if the legend has been created
+        let isLegendCreated = false;
 
-        // Ensure that the legend is only created once
         function createScene1(data) {
             // Clear existing SVG elements
             d3.select("#chart1").selectAll("svg").remove();
@@ -210,21 +209,17 @@
                 .style("text-anchor", "middle")
                 .text("Age Groups");
 
-            // Remove any existing legend before adding a new one
             console.log("Legend creation started");
             console.log("Color domain:", color.domain());
 
-// Normalize and deduplicate the domain values
             const domain = Array.from(new Set(color.domain().map(d => String(d)))); // Convert all values to strings and remove duplicates
 
-// Remove previous legend
             svg.selectAll(".legend").remove();
 
             const legend = svg.append("g")
                 .attr("class", "legend")
                 .attr("transform", `translate(${width + 40}, 0)`);
 
-// Create legend rectangles
             legend.selectAll("rect")
                 .data(domain)
                 .enter().append("rect")
@@ -234,7 +229,7 @@
                 .attr("height", 20)
                 .attr("fill", d => color(d)); // Apply color function to normalized binary values
 
-// Create legend text
+
             legend.selectAll("text")
                 .data(domain)
                 .enter().append("text")
@@ -250,13 +245,12 @@
                 .attr("viewBox", "0 0 10 10")
                 .attr("refX", 5)
                 .attr("refY", 5)
-                .attr("markerWidth", 4) // Smaller marker width
-                .attr("markerHeight", 4) // Smaller marker height
+                .attr("markerWidth", 4)
+                .attr("markerHeight", 4)
                 .attr("orient", "auto")
                 .append("path")
                 .attr("d", "M 0 0 L 10 5 L 0 10 z")
                 .attr("fill", "black");
-
 
             console.log("Arrowhead marker defined");
 
@@ -269,17 +263,15 @@
                 const xPos = x0(maxAgeGroup) + x1(maxDiagnosis) + x1.bandwidth() / 2;
                 const yPos = y(maxCount) - 10;
 
-                console.log(`xPos: ${xPos}, yPos: ${yPos}`); // Debugging output
+                console.log(`xPos: ${xPos}, yPos: ${yPos}`);
 
-                // Define end position for the annotation line
-                const endX = xPos - 40; // Move arrowhead a bit to the left of the bar
-                const endY = yPos + 20; // Move arrowhead above the bar
+                const endX = xPos - 40;
+                const endY = yPos + 20;
 
-                // Add annotation line with arrowhead
                 chart.append("line")
-                    .attr("x1", endX - 120) // Start far to the left
-                    .attr("y1", endY + 70) // Start below
-                    .attr("x2", endX) // End at the arrowhead position
+                    .attr("x1", endX - 120)
+                    .attr("y1", endY + 70)
+                    .attr("x2", endX)
                     .attr("y2", endY)
                     .attr("stroke", "black")
                     .attr("stroke-width", 2)
@@ -289,17 +281,16 @@
 
                 // Add text annotation
                 chart.append("text")
-                    .attr("x", endX - 400)  // Adjusted x position for text
-                    .attr("y", endY +80)   // Adjusted y position for text
+                    .attr("x", endX - 400)
+                    .attr("y", endY +80)
                     .text("Highest Count of Alzheimer's Disease\n in 60-69 Age Group")
                     .attr("fill", "black")
-                    .style("font-size", "12px") // Optional: Adjust font size
-                    .style("text-anchor", "start"); // Optional: Align text;
+                    .style("font-size", "12px")
+                    .style("text-anchor", "start");
             } else {
                 console.error('No data found for diagnosis 1 in the 60-69 age group.');
             }
         }
-
 
         // Scene 2: Gender and Diagnosis Comparison
         function createScene2(data) {
@@ -360,17 +351,14 @@
             console.log("Legend creation started");
             console.log("Color domain:", color.domain());
 
-// Normalize and deduplicate the domain values
             const domain = Array.from(new Set(color.domain().map(d => String(d)))); // Convert all values to strings and remove duplicates
 
-// Remove previous legend
             svg.selectAll(".legend").remove();
 
             const legend = svg.append("g")
                 .attr("class", "legend")
                 .attr("transform", `translate(${width + 40}, 0)`);
 
-// Create legend rectangles
             legend.selectAll("rect")
                 .data(domain)
                 .enter().append("rect")
@@ -380,7 +368,6 @@
                 .attr("height", 20)
                 .attr("fill", d => color(d)); // Apply color function to normalized binary values
 
-// Create legend text
             legend.selectAll("text")
                 .data(domain)
                 .enter().append("text")
@@ -390,7 +377,7 @@
 
             console.log("Legend creation ended");
 
-            // Identify the gender group with the most diagnosis 1 count
+            //most diagnosis 1 count
             const maxDiagnosis1 = genderArray.reduce((max, d) => {
                 const diagnosis1Count = d.diagnosisCounts.find(dc => dc.diagnosis == 1)?.count || 0;
                 return diagnosis1Count > max.count ? { gender: d.gender, count: diagnosis1Count } : max;
@@ -428,7 +415,6 @@
                     .attr("stroke", "black")
                     .attr("marker-end", "url(#arrow)");
 
-                // Add text annotation
                 svg.append("text")
                     .attr("x", annotationX + margin.left)
                     .attr("y", annotationY - 25 + margin.top)
@@ -500,17 +486,14 @@
             console.log("Legend creation started");
             console.log("Color domain:", color.domain());
 
-// Normalize and deduplicate the domain values
             const domain = Array.from(new Set(color.domain().map(d => String(d)))); // Convert all values to strings and remove duplicates
 
-// Remove previous legend
             svg.selectAll(".legend").remove();
 
             const legend = svg.append("g")
                 .attr("class", "legend")
                 .attr("transform", `translate(${width + 40}, 0)`);
 
-// Create legend rectangles
             legend.selectAll("rect")
                 .data(domain)
                 .enter().append("rect")
@@ -518,9 +501,8 @@
                 .attr("y", (d, i) => i * 25)
                 .attr("width", 20)
                 .attr("height", 20)
-                .attr("fill", d => color(d)); // Apply color function to normalized binary values
+                .attr("fill", d => color(d));
 
-// Create legend text
             legend.selectAll("text")
                 .data(domain)
                 .enter().append("text")
@@ -529,7 +511,7 @@
                 .text(d => `Diagnosis ${d}`);
 
             console.log("Legend creation ended");
-// Identify the ethnicity group with the most diagnosis 1 count
+            // max diagnosis count group
             const maxDiagnosis1 = ethnicityArray.reduce((max, d) => {
                 const diagnosis1Count = d.diagnosisCounts.find(dc => dc.diagnosis == 1)?.count || 0;
                 return diagnosis1Count > max.count ? { ethnicity: d.ethnicity, count: diagnosis1Count } : max;
@@ -551,7 +533,6 @@
                 .attr("fill", "black");
             console.log("Arrowhead marker defined");
 
-            // Add annotation
             if (maxDiagnosis1.ethnicity !== null) {
                 const annotationX = x0(maxDiagnosis1.ethnicity) + x1(1) + x1.bandwidth() / 2;
                 const annotationY = y(maxDiagnosis1.count);
@@ -559,26 +540,25 @@
                 console.log("Annotation X:", annotationX);
                 console.log("Annotation Y:", annotationY);
 
-                // Add arrow
                 svg.append("line")
                     .attr("x1", annotationX + margin.left)
                     .attr("y1", annotationY + margin.top)
-                    .attr("x2", annotationX + margin.left - 40)  // Adjust the X2 coordinate for upper right direction
-                    .attr("y2", annotationY + margin.top + 40)  // Adjust the Y2 coordinate for upper right direction
+                    .attr("x2", annotationX + margin.left - 40)
+                    .attr("y2", annotationY + margin.top + 40)
                     .attr("stroke", "black")
                     .attr("marker-end", "url(#arrow-scene3)");
 
                 // Add text annotation
                 svg.append("text")
-                    .attr("x", annotationX + margin.left + 50)  // Adjust the X coordinate for text position
-                    .attr("y", annotationY + margin.top - 50)  // Adjust the Y coordinate for text position
+                    .attr("x", annotationX + margin.left + 50)
+                    .attr("y", annotationY + margin.top - 50)
                     .attr("text-anchor", "start")
                     .attr("fill", "black")
-                    .style("font-size", "12px")  // Make the text font smaller
+                    .style("font-size", "12px")
                     .text(`Highest Count of Alzheimer's: ${maxDiagnosis1.count}`);
             }
         }
-        // Create and update functions for Scene 4 and Scene 5
+        // functions for Scene 4 and Scene 5
         function createScatterPlot(containerId, xVar, yVar, title, yAxisLabel) {
             const svg = d3.select(containerId).append("svg").attr("width", 1000).attr("height", 500);
             const margin = { top: 40, right: 150, bottom: 60, left: 50 };
@@ -661,7 +641,7 @@
         const updateChart1 = createScatterPlot("#chart4", "AlcoholConsumption", "MMSE", "Alcohol Consumption", "MMSE");
         const updateChart2 = createScatterPlot("#chart5", "SleepQuality", "MMSE", "Sleep Quality", "MMSE");
 
-        // Function to update scatter plot 1 based on dropdown
+        //update scatter plot 1 based on dropdown
         function updateScatterPlot1() {
             const selectedVariable = document.getElementById("dropdown1").value;
             const yAxisLabel = selectedVariable === "MMSE" ? "MMSE" : "Functional Assessment";
@@ -669,7 +649,7 @@
             createScatterPlot("#chart4", "AlcoholConsumption", selectedVariable, "Alcohol Consumption", yAxisLabel)();
         }
 
-        // Function to update scatter plot 2 based on dropdown
+        // update scatter plot 2 based on dropdown
         function updateScatterPlot2() {
             const selectedVariable = document.getElementById("dropdown2").value;
             const yAxisLabel = selectedVariable === "MMSE" ? "MMSE" : "Functional Assessment";
